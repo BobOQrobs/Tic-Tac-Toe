@@ -1,0 +1,87 @@
+game_field = []
+string_field = ''
+turn = 1
+won = False
+
+def print_field(game, x=None, y=None):
+    global game_field
+    global string_field
+    global turn
+    game_field = [game[0:3], game[3:6], game[6:9]]
+
+    if x and y:
+        r = list(game_field[int(x) - 1])
+        r[int(y) - 1] = 'O' if turn % 2 == 0 else 'X'
+        turn += 1
+        game_field[int(x) - 1] = ''.join(r)
+
+    print("---------")
+    for field in game_field:
+        print("|", " ".join(field), "|")
+    print("---------")
+
+    string_field = ''.join(str(s) for s in [field for field in game_field])
+
+
+def check_winner(game):
+    blanks = game.count("_")
+    o = game.count("O")
+    x = game.count("X")
+
+    o_win = False
+    x_win = False
+
+    z = [game[0:3], game[3:6], game[6:9]]
+    dx = [''.join([z[0][2], z[1][1], z[2][0]]), ''.join([z[0][0], z[1][1], z[2][2]])]
+    hx = [''.join([z[0][0], z[1][0], z[2][0]]), ''.join([z[0][1], z[1][1], z[2][1]]),
+          ''.join([z[0][2], z[1][2], z[2][2]])]
+
+    for e in [dx, hx, z]:
+        if "XXX" in e:
+            x_win = True
+        if "OOO" in e:
+            o_win = True
+
+    if x_win:
+        return "X"
+    elif o_win:
+        return "O"
+    elif not blanks:
+        return "Draw"
+
+initial_field = "_" * 9
+new_field = print_field(initial_field)
+
+def run_game():
+    global won
+    rowcol = input("Enter the coordinates: ")
+
+    if valid_move(rowcol):
+        # move
+        row, col = rowcol.split(" ")
+        print_field(string_field, row, col)
+        if check_winner(string_field) in ['X', 'O', 'Draw']:
+            result = check_winner(string_field)
+            print('Draw' if result == 'Draw' else f"{result} wins")
+            won = True
+
+def valid_move(rowcol):
+    row, col = rowcol.split(" ")
+    if row.isnumeric() and col.isnumeric():
+        if int(row) >= 4 or int(col) >= 4:
+            print("Coordinates should be from 1 to 3!")
+            return False
+        else:
+            row = int(row)
+            col = int(col)
+            if game_field[row - 1][col - 1] != "_":
+                print("This cell is occupied! Choose another one!")
+                return False
+            else:
+                return True
+    else:
+        print("You should enter numbers!")
+        return False
+
+while not won:
+    run_game()
