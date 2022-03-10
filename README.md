@@ -11,3 +11,8 @@ built using advanced list operations, functions and processing user input.
 2. address specific positions in a string to achieve the required outcome.
 3. responds to the user’s actions and analyzes the state of the field.
 Not only will it tell you who is winning, but it will also determine if the situation on a given field is theoretically possible!
+
+
+
+https://user-images.githubusercontent.com/96755129/157641518-1b225f4c-68ca-4e91-9787-40073d083c8a.mp4
+
